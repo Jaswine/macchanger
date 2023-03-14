@@ -1,55 +1,80 @@
 from django.shortcuts import render, redirect
 from base.api.utils import slugGenerate
-from .models import Company
+from .models import Company, CompanySocialMedia
 from .utils import slugGenerate
-from .services import get_product, get_all_products   
+from .services import get_product, get_all_products, get_company_icons
+from .forms import CompanySocialMediaForm
 
 def showCompany(request, slug: str): 
    company = get_product(slug)
-   return render(request, 'index.html', {'company': company})
+   company_icons = get_company_icons(company)
+
+   context = {
+      'company': company, 
+      'icons': company_icons
+   }
+   return render(request, 'index.html', context)
 
 def home(request):
-   # if request.user.is_authenticated:
+   if request.user.is_authenticated:
       companies = get_all_products()
       
       context = {'companies': companies}
       return render(request, 'admin/home.html', context)
-   # else: 
-   #    return redirect('/admin')
+   else: 
+      return redirect('/admin')
    
 def create(request):
-   # if request.user.is_authenticated:
+   if request.user.is_authenticated:
+      form = CompanySocialMediaForm()
+
       if request.method == 'POST':
          name = request.POST.get('name')
-         title = request.POST.get('title')
-         number = request.POST.get('number')
-         email = request.POST.get('email')
-         location = request.POST.get('location')
-         about = request.POST.get('about')
-         ava = request.FILES.get('ava')
          slug = slugGenerate(name)
          
-         form = Company.objects.create(
+         companyForm = Company.objects.create(
             name = name, 
             slug = slug,
-            title = title, 
-            number = number,
-            email = email,
-            location = location,
-            about = about,
-            ava = ava,
+            title = request.POST.get('title'), 
+            number = request.POST.get('number'),
+            email = request.POST.get('email'),
+            location = request.POST.get('location'),
+            about = request.POST.get('about'),
+            ava = request.FILES.get('ava', None),
          )
-         
-         form.save()
-         return redirect('base:constructor', slug)
+
+         companyForm.save()
+         return redirect('base:createCompanySocialMedia', slug)
       
-      return render(request, 'admin/create.html')
-   # else: 
-   #    return redirect('/admin')
+      return render(request, 'admin/create.html', {'form': form, 'type': 'createCompany'})
+   else: 
+      return redirect('/admin')
+
+def createCompanySocialMedia(request, slug):
+   if request.user.is_authenticated:
+      company = get_product(slug)
+      
+      if company:
+         form = CompanySocialMediaForm()
+
+         if request.method == 'POST':
+            form = CompanySocialMediaForm(request.POST)
+
+            if form.is_valid():
+               form.save()
+               return redirect('base:constructor', slug)
+         
+         return render(request, 'admin/create.html', {
+            'form': form, 
+            'type': 'createCompanySocialMedia', 'company': company
+         })
+   else: 
+      return redirect('/admin')
 
 def constructor(request, slug:str):
-   # if request.user.is_authenticated:
+   if request.user.is_authenticated:
       company = get_product(slug)
+      company_icons = get_company_icons(company)
       
       if request.method == 'POST':
          background_color = request.POST.get('background_color')
@@ -123,28 +148,44 @@ def constructor(request, slug:str):
             company.ava = ava
             
          title = request.POST.get('title')
-         if (company.title != title): company.title = title
+         if (title and company.title != title): company.title = title
          
          location = request.POST.get('location')
-         if (company.location != location): company.location = location
+         if (location and company.location != location): company.location = location
          
          number = request.POST.get('number')
-         if (company.number != number): company.number = number
+         if (number and company.number != number): company.number = number
          
          email = request.POST.get('email')
-         if (company.email != email): company.email = email
+         if (email and company.email != email): company.email = email
          
          about = request.POST.get('about')
-         if (company.about != about): company.about = about
+         if (about and company.about != about): company.about = about
+
+         card_icon_color = request.POST.get('card_icon_color')
+         if card_icon_color:
+            company.card_icon_color = card_icon_color
+
+         font_icon_size = request.POST.get('font_icon_size')
+         if font_icon_size:
+            company.font_icon_size = font_icon_size
+
+         card_icon_color_hover = request.POST.get('card_icon_color_hover')
+         if card_icon_color_hover:
+            company.card_icon_color_hover = card_icon_color_hover
          
          company.save()
       
-      return render(request, 'admin/constructor.html', {'company': company})
-   # else: 
-   #    return redirect('/admin')
+      context = {
+         'company': company,
+         'icons': company_icons
+      }
+      return render(request, 'admin/constructor.html', context)
+   else: 
+      return redirect('/admin')
    
 def cardDelete(request, slug:str):
-   # if request.user.is_authenticated:
+   if request.user.is_authenticated:
       company = get_product(slug)
       
       if company:
@@ -153,5 +194,5 @@ def cardDelete(request, slug:str):
             return redirect('base:home')
       
       return render(request, 'admin/delete.html', {'company': company})
-   # else: 
-   #    return redirect('/admin')  
+   else: 
+      return redirect('/admin')  

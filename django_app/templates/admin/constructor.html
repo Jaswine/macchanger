@@ -229,19 +229,10 @@
             {% endif %}
          }
 
-         /*constructor__pre__card__back*/
-         .constructor__pre__card__back {
-         }
-         .constructor__card {
-            display: none;
-         }
+         .constructor__card,
+         .constructor__card__h2,  
+         .constructor__text, 
          .constructor__card__image {
-            display: none;
-         }
-         .constructor__card__h2 {
-            display: none;
-         }
-         .constructor__text {
             display: none;
          }
 
@@ -269,14 +260,18 @@
             background-color: black;
             color: aliceblue;
          }
-         .constructor__button {
-            display: none;
-         }
-
-         .constructor__label {
+         .constructor__button, .constructor__label, .constructor__icon{
             display: none;
          }  
+         textarea {
+            color: {% if company.card_text_color %}
+               {{company.card_text_color}}
+               {% else %}
+               {{company.color}}
+               {% endif %}
+         }
 
+         
       </style>
       <div class="pre__card" title="основное" >
 
@@ -318,6 +313,115 @@
             {% endif %}
             <button type="button" class="btn" id="save" title="кнопка">Сохранить</button>
             {% include "admin/components/icons.html" %}
+
+            <div class="data__icons">
+               {% if  icons.facebook %}
+               <a class="fa-brands fa-facebook icon"></a>
+               {% endif %}
+         
+               {% if  icons.instagram %}
+               <a class="fa-brands fa-instagram icon" ></a>
+               {% endif%}
+         
+               {% if  icons.youtube %}
+               <a class="fa-brands fa-youtube icon" ></a>
+               {% endif%}
+         
+               {% if  icons.telegram %}
+               <a class="fa-brands fa-telegram icon" ></a>
+               {% endif%}
+         
+               {% if  icons.twitter %}
+               <a class="fa-brands fa-twitter icon" ></a>
+               {% endif%}
+         
+               {% if  icons.tiktok %}
+               <a class="fa-brands fa-tiktok icon" ></a>
+               {% endif%}
+         
+               {% if  icons.pinterest %}
+               <a class="fa-brands fa-pinterest icon" ></a>
+               {% endif%}
+         
+               {% if  icons.snapChat %}
+               <a class="fa-brands fa-snapchat icon"></a>
+               {% endif%}
+               
+               {% if  icons.linkedin %}
+               <a class="fa-brands fa-linkedin icon"></a>
+               {% endif%}
+               {% if  icons.tumbler %}
+               <a class="fa-brands fa-tumblr icon" ></a>
+               {% endif%}
+         
+               {% if  icons.vk %}
+               <a class="fa-brands fa-vk icon" ></a>
+               {% endif%}
+         
+               {% if  icons.discord %}
+               <a class="fa-brands fa-discord icon"></a>
+               {% endif%}
+         
+               {% if  icons.twitch %}
+               <a class="fa-brands fa-twitch icon"></a>
+               {% endif%}
+         
+               {% if  icons.quora %}
+               <a class="fa-brands fa-quora icon"></a>
+               {% endif%}
+               
+               {% if  icons.whatsapp %}
+               <a class="fa-brands fa-whatsapp icon"></a>
+               {% endif%}
+         
+               {% if  icons.github %}
+               <a class="fa-brands fa-github icon" ></a>
+               {% endif%}
+         
+               {% if  icons.sinaweibo %} 
+               <a class="fa-brands fa-sinaweibo icon" ></a>
+               {% endif%}
+         
+               {% if  icons.viber %}
+               <a class="fa-brands fa-viber icon" ></a>
+               {% endif%}
+         
+               {% if  icons.skype %}
+               <a class="fa-brands fa-skype icon" ></a>
+               {% endif%}
+         
+               {% if  icons.soundCloud %}
+               <a class="fa-brands fa-soundcloud icon" ></a>
+               {% endif%}
+         
+               {% if  icons.spotify %}
+               <a class="fa-brands fa-spotify icon" ></a>
+               {% endif%}
+         
+               {% if  icons.their_website1 %}
+               <a class="fa-solid fa-earth-americas icon"></a>
+               {% endif%}
+         
+               {% if  icons.their_website2 %} 
+               <a class="fa-solid fa-earth-americas icon"></a>
+               {% endif%}
+               
+               {% if  icons.their_website3 %}
+               <a class="fa-solid fa-earth-americas icon"></a>
+               {% endif%}
+
+               {% if  icons.yandex_taxi %}
+               <a class="fa-solid fa-taxi icon"></a>
+               {% endif%}
+
+               {% if  icons.yandex_cards %}
+               <a class="fa-solid fa-map icon"></a>
+               {% endif%}
+
+               {% if  icons.google_cards %}
+               <a class="fa-solid fa-map icon"></a>
+               {% endif%}
+            </div>
          </div>
       </div>
    </div>
@@ -333,79 +437,48 @@
          
       </div>
 
-      <div class="constructor__right__menu constructor__pre__card">
+      {% include "admin/components/constructor__pre__card.html" %}
+      {% include "admin/components/constructor__card.html" %}
+      {% include "admin/components/constructor__card__image.html" %}
+      {% include "admin/components/constructor__card__h2.html" %}
+      {% include "admin/components/constructor__button.html" %}
+      {% include "admin/components/constructor__text.html" %}
+      {% include "admin/components/constructor__label.html" %}
+
+      <div class="constructor__right__menu constructor__icon">
+         <h2>Иконки</h2>
          <div class="setting">
-            <label>Цвет фона:  </label>
+            <label>Цвет иконки:  </label>
             <input 
                type="color" 
                class="settings__color"
-               name = 'background_color'
-               value="{{company.background_color}}"
-               id = 'background_color'
+               name = 'card_icon_color'
+               value="{{company.card_icon_color}}"
+               id = 'card_icon_color'
             />
          </div>
          <div class="setting">
-            <label>Цвет текста:  </label>
+            <label>Размер:</label>
+            <input 
+               type="text" 
+               class="settings__color"
+               name = 'font_icon_size'
+               value="{{company.font_icon_size}}"
+               id = 'font_icon_size'
+            />
+         </div>
+         <h2>Иконки</h2>
+         <div class="setting">
+            <label>Цвет при наведении:</label>
             <input 
                type="color" 
                class="settings__color"
-               name = 'color'
-               value="{{company.color}}"
-               id = 'color'
+               name = 'card_icon_color_hover'
+               value="{{company.card_icon_color_hover}}"
+               id = 'card_icon_color_hover'
             />
          </div>
       </div>
-
-   {% include "admin/components/constructor__card.html" %}
-   {% include "admin/components/constructor__card__image.html" %}
-   {% include "admin/components/constructor__card__h2.html" %}
-   {% include "admin/components/constructor__button.html" %}
-   {% include "admin/components/constructor__text.html" %}
-
-   <div class="constructor__right__menu constructor__label">
-         <h2>Поле Пометки</h2>
-      <div class="setting">
-
-         <label>Размер:</label>
-         <input 
-            type="text" 
-            class="settings__color"
-            name = 'card_label_font_size'
-            value="{{company.card_label_font_size}}"
-            id = 'card_label_font_size'
-         />
-      </div>
-      <div class="setting">
-         <label>Шрифт:</label>
-         <input 
-            type="text" 
-            class="settings__color settings__color__max"
-            name = 'card_label_font_family'
-            value="{{company.card_label_font_family}}"
-            id = 'card_label_font_family'
-         />
-      </div>
-      <div class="setting">
-         <label>Цвет:</label>
-         <input 
-            type="color" 
-            class="settings__color"
-            name = 'card_label_color'
-            value="{{company.card_label_color}}"
-            id = 'card_label_color'
-         />
-      </div>
-      <div class="setting">
-         <label>Толщина:</label>
-         <input 
-            type="text" 
-            class="settings__color"
-            name = 'card_label_font_weight'
-            value="{{company.card_label_font_weight}}"
-            id = 'card_label_font_weight'
-         />
-      </div>
-   </div>
 
    </div>
 </form>
@@ -419,8 +492,9 @@
    let constructor__button = document.querySelector('.constructor__button')
    let constructor__text = document.querySelector('.constructor__text')
    let constructor__label = document.querySelector('.constructor__label')
+   let constructor__icon = document.querySelector('.constructor__icon')
 
-   let for_rendering_when_u_click_on_it = [constructor__pre__card, constructor__card, constructor__card__image, constructor__card__h2, constructor__button, constructor__text, constructor__label]
+   let for_rendering_when_u_click_on_it = [constructor__icon, constructor__pre__card, constructor__card, constructor__card__image, constructor__card__h2, constructor__button, constructor__text, constructor__label]
 
    // COMPONENTS FOR CHANGE
    let pre_card = document.querySelector('.pre__card');
@@ -430,6 +504,7 @@
    let btn = document.querySelector('.btn');
    let texts = document.querySelectorAll('.text')
    let labels = document.querySelectorAll('.label')
+   let icons = document.querySelectorAll('.fa-brands ')
 
    let clearRendering = () => {
       for_rendering_when_u_click_on_it.map(element => element.style.display = 'none')
@@ -472,6 +547,9 @@
             clearRendering()
             constructor__card.style.display = 'block';
             break;
+         case 'fa-brands':
+            clearRendering();
+            constructor__icon.style.display = 'block';
          default: 
             console.log(clickedElementClass)
       }
@@ -688,6 +766,19 @@
       })
    }
 
+   let card_icon_color = document.getElementById('card_icon_color')
+   let font_icon_size = document.getElementById('font_icon_size')
+   let card_icon_color_hover =   document.getElementById('card_icon_color_hover')
+
+   for (let icon of icons) {
+      card_icon_color.addEventListener('change', () => {
+         icon.style.color = card_icon_color.value
+      })
+
+      font_icon_size.addEventListener('change', () => {
+         icon.style.fontSize = font_icon_size.value
+      })
+   }
 </script>
 
 <scripts src="{% static 'js/constructor.js' %}"></scripts>

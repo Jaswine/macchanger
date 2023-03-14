@@ -10,19 +10,23 @@
 <div class="page">
   <form  method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-      <h2>Добавить Компанию</h2>
-      <input type="text" name="name" class="input" placeholder="Название...">
-      <input type="text" name="title" class="input" placeholder="Заголовок или цитата...">
-      <input type="text" name="number" class="input" placeholder="Номер...">
-      <input type="email" name="email" class="input" placeholder="Емаил...">
-      <input type="text" name="location" class="input" placeholder="Местоположение...">
-      <input type="file" name="ava" placeholder="Логотип...">
-      <textarea name="about" placeholder="Описание..." ></textarea>
-
+      {% if type == 'createCompany' %}
+        <h2>Добавить Компанию</h2>
+        <input type="text" name="name" class="input" placeholder="Название...">
+        <input type="text" name="title" class="input" placeholder="Заголовок или цитата...">
+        <input type="text" name="number" class="input" placeholder="Номер...">
+        <input type="email" name="email" class="input" placeholder="Емаил...">
+        <input type="text" name="location" class="input" placeholder="Местоположение...">
+        <input type="file" name="ava" placeholder="Логотип...">
+        <textarea name="about" placeholder="Описание..." ></textarea>
+      {% else %}
+        {{form.as_p}}
+      {% endif %}
       <button type="submit" class="btn">Продолжить</button>
   </form>
 </div>
 
+{% if type == 'createCompany' %}
 <script>
   let inputs = document.querySelectorAll('.input');
   let button = document.querySelector('button');
@@ -35,4 +39,6 @@
     });
   }
 </script>
+{% endif %}
+
 {% endblock content %}
